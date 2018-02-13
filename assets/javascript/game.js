@@ -1,3 +1,7 @@
+var userWon = false;
+var userLost = false;
+
+
 $(document).ready(function(){
     
     //The values assigned to each crystal color
@@ -16,13 +20,13 @@ $(document).ready(function(){
     var userLost = false;
 
     // If the user has won the round
-    var userWon = false;
+    userWon = false;
 
     //Tally of games won or lost added to after each round depending on outcome. 
     var gamesWon = 0;
     var gamesLost = 0;
 
-    //Initiates a new game
+    //calls a new game
     newGame();
 
     //When a crystal is clicked...
@@ -45,15 +49,24 @@ $(document).ready(function(){
             if(this.value == "green") {
                 userVal += greenCrystalVal;
             }
+            if(userVal != 0) {
+                $("#win-lose-status").empty().attr("class", "");
+                console.log("Clear alert");
+            }
         } else if (userLost) {
             newGame();
             gamesLost ++;
             $("#user-losses").text("Losses: " + gamesLost);
+            $("#win-lose-status").attr("class", "alert alert-danger").text("You lost. Click a crystal to play again.");
+            
         } else if (userWon) {
             newGame();
             gamesWon ++;
             $("#user-wins").text("Wins: " + gamesWon);
+            $("#win-lose-status").attr("class", "alert alert-success").text("You Won!. Click a crystal to play again.");
         }
+
+        
         
         changeWinLossStatus();
         $("#user-score").text(userVal);
@@ -73,13 +86,14 @@ $(document).ready(function(){
         userLost = false;
         $("#user-wins").text("Wins: " + gamesWon);
         $("#user-losses").text("Losses: " + gamesLost);
+        
     }
 
-    // Returns a random int between a min and max
+    // Returns a random int between a min and max. Maximum is exclusive and the minimum is inclusive
     function getRandomInt(min, max) {
-    min = Math.ceil(min);
-    max = Math.floor(max);
-    return Math.floor(Math.random() * (max - min)) + min; //The maximum is exclusive and the minimum is inclusive
+        min = Math.ceil(min);
+        max = Math.floor(max);
+        return Math.floor(Math.random() * (max - min)) + min; //The maximum is exclusive and the minimum is inclusive
     }
 
     // A win and loss status change
